@@ -86,7 +86,7 @@ export function ShareGrind({ todos }: ShareGrindProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleDownload = async () => {
+  const handleShareLink = async () => {
     try {
       const { createShareLink } = await import("../utils/api");
       const shareId = await createShareLink(
@@ -95,10 +95,10 @@ export function ShareGrind({ todos }: ShareGrindProps) {
       );
       
       const shareUrl = `${window.location.origin}?share=${shareId}`;
-      await navigator.clipboard.writeText(shareUrl);
+      window.open(shareUrl, "_blank");
       
-      toast.success("Shareable link copied!", {
-        description: "Share it on social media",
+      toast.success("Shareable link created!", {
+        description: "Your grind is now ready to be shared.",
       });
     } catch (error) {
       console.error("Error creating share link:", error);
@@ -255,12 +255,12 @@ export function ShareGrind({ todos }: ShareGrindProps) {
                   )}
                 </Button>
                 <Button
-                  onClick={handleDownload}
+                  onClick={handleShareLink}
                   disabled={shareTodos.length === 0}
                   className="flex-1 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Download className="h-4 w-4 mr-2" />
-                  Save Image
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share
                 </Button>
               </div>
 
