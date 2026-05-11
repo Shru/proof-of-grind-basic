@@ -160,6 +160,11 @@ export default function App() {
     });
   };
 
+  const editTodo = (id: string, updates: Partial<Omit<Todo, "id" | "completed">>) => {
+    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo)));
+    toast.success("Task updated");
+  };
+
   const filteredTodos = useMemo(() => {
     let filtered = todos;
 
@@ -393,6 +398,8 @@ export default function App() {
                     todo={todo}
                     onToggle={toggleTodo}
                     onDelete={deleteTodo}
+                    onEdit={editTodo}
+                    customCategories={customCategories}
                   />
                 ))
               )}
