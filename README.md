@@ -2,6 +2,8 @@
 
 "Proof of Grind" is a modern and feature-rich todo list application designed to help you track your tasks, stay organized, and share your accomplishments. It's more than just a simple todo list; it's a tool to visualize your progress and celebrate your hard work.
 
+Try it out here: [https://proof-of-grind-basic.vercel.app/](https://proof-of-grind-basic.vercel.app/)
+
 ## Features
 
 *   **User Authentication**: Secure user authentication powered by Supabase.
