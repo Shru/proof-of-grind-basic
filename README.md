@@ -30,12 +30,11 @@
 
 ## Getting Started
 
-To get a local copy up and running, follow these simple steps.
-
 ### Prerequisites
 
 *   Node.js (v18 or higher)
 *   npm
+*   A [Supabase](https://supabase.com/) project
 
 ### Installation & Setup
 
@@ -51,21 +50,44 @@ To get a local copy up and running, follow these simple steps.
     ```
 
 3.  **Set up environment variables**
-    -   Create a free Supabase project at [supabase.com](https://supabase.com/).
-    -   In your Supabase project dashboard, go to **Settings** > **API**.
+    -   In your Supabase project dashboard, go to **Settings** → **API**.
     -   Find your **Project URL** and **anon (public) API Key**.
-    -   Rename the `.env.example` file to `.env` and add your Supabase credentials:
+    -   Copy `.env.example` to `.env` and fill in your credentials:
         ```env
         VITE_SUPABASE_URL=YOUR_SUPABASE_URL
         VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
         ```
 
-4.  **Run the development server**
+4.  **Create the database table**
+    -   In your Supabase dashboard, go to **SQL Editor** and run:
+        ```sql
+        CREATE TABLE kv_store_92eeb12f (
+          key TEXT NOT NULL PRIMARY KEY,
+          value JSONB NOT NULL
+        );
+        ```
+
+5.  **Deploy the Edge Function**
+    -   Download the [Supabase CLI](https://github.com/supabase/cli/releases/latest) binary for your platform.
+    -   Login and link your project:
+        ```sh
+        supabase login
+        supabase link --project-ref YOUR_PROJECT_REF
+        ```
+    -   Deploy the function:
+        ```sh
+        supabase functions deploy <function-name> --use-api
+        ```
+    -   In the Supabase dashboard, go to **Edge Functions** → **Manage secrets** and add:
+        -   `SB_URL` = your Supabase project URL
+        -   `SB_SERVICE_ROLE_KEY` = your service role key (from **Settings** → **API** → `service_role`)
+
+6.  **Run the development server**
     ```sh
     npm run dev
     ```
 
-    Open [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal) to view the app in your browser.
+    Open [http://localhost:3000](http://localhost:3000) (or the port shown in your terminal) to view the app in your browser.
 
 ## License
 
