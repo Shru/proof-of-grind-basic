@@ -264,7 +264,12 @@ export default function App() {
   }
 
   if (!isAuthenticated) {
-    return <Auth onAuthenticated={() => setIsAuthenticated(true)} />;
+    return (
+      <>
+        <Auth onAuthenticated={() => setIsAuthenticated(true)} />
+        <Toaster position="bottom-right" />
+      </>
+    );
   }
 
   return (
