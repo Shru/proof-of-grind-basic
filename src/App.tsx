@@ -12,7 +12,7 @@ import { Button } from "./components/ui/button";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner@2.0.3";
 import { checkAuthentication, logout, fetchTodos, saveTodos, fetchCategories, saveCategories } from "./utils/api";
-import logo from "figma:asset/274ef5507cc1ae6046f9beb8957927723199d5e6.png";
+import logo from "./assets/logo.png";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

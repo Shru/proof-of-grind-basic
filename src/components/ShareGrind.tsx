@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner@2.0.3";
 import { Todo } from "./TodoItem";
-import logo from "figma:asset/274ef5507cc1ae6046f9beb8957927723199d5e6.png";
+import logo from "../assets/logo.png";
 
 interface ShareGrindProps {
   todos: Todo[];

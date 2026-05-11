@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { toast } from "sonner@2.0.3";
 import { login, signup } from "../utils/api";
-import logo from "figma:asset/274ef5507cc1ae6046f9beb8957927723199d5e6.png";
+import logo from "../assets/logo.png";
 
 interface AuthProps {
   onAuthenticated: () => void;

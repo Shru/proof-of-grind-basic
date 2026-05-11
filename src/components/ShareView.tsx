@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowLeft, Calendar } from "lucide-react";
-import logo from "figma:asset/274ef5507cc1ae6046f9beb8957927723199d5e6.png";
+import logo from "../assets/logo.png";
 
 interface ShareViewProps {
   shareId: string;
