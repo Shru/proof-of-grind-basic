@@ -71,6 +71,6 @@ To get a local copy up and running, follow these simple steps.
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Acknowledgements
+## Design
 
-*   Original design inspiration from [Figma](https://www.figma.com/design/j9z2cEdQB25J8pVD4k8v8n/Todo-List-App-Design).
+*   Find the Figma template [here](https://www.figma.com/design/j9z2cEdQB25J8pVD4k8v8n/Todo-List-App-Design).
