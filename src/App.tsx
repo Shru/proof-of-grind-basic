@@ -233,12 +233,14 @@ export default function App() {
     setFilterPriority("all");
     toast.info("Filters cleared");
   };
+  const deleteCategory = (categoryToDelete: string) => {
+  setCustomCategories(
+    customCategories.filter(
+      (category: string) => category !== categoryToDelete
+    )
+  );
+};
 
-  const addCustomCategory = (category: string) => {
-    if (category && !customCategories.includes(category)) {
-      setCustomCategories([...customCategories, category]);
-    }
-  };
 
   // Show share view if shareId is present
   if (shareId) {
