@@ -25,6 +25,7 @@ export default function App() {
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
   const [customCategories, setCustomCategories] = useState<string[]>([]);
+  const [defaultCategories, setDefaultCategories] = useState<string[]>(["Work", "Personal", "Shopping", "Health"]);
 
   // Check for share link in URL
   useEffect(() => {
@@ -241,12 +242,10 @@ export default function App() {
     toast.info("Filters cleared");
   };
   const deleteCategory = (categoryToDelete: string) => {
-  setCustomCategories(
-    customCategories.filter(
-      (category: string) => category !== categoryToDelete
-    )
-  );
-};
+    setDefaultCategories((prev) => prev.filter((c) => c !== categoryToDelete));
+    setCustomCategories((prev) => prev.filter((c) => c !== categoryToDelete));
+    toast.info(`Category "${categoryToDelete}" removed`);
+  };
 
 
   // Show share view if shareId is present
@@ -339,6 +338,7 @@ export default function App() {
             >
               <TodoInput
                 onAdd={addTodo}
+                defaultCategories={defaultCategories}
                 customCategories={customCategories}
                 onAddCategory={addCustomCategory}
                 onDeleteCategory={deleteCategory}

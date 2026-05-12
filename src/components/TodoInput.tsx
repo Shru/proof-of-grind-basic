@@ -26,6 +26,7 @@ interface TodoInputProps {
     dueDate?: string;
   }) => void;
   customCategories: string[];
+  defaultCategories: string[];
   onAddCategory: (category: string) => void;
   onDeleteCategory: (category: string) => void;
 }
@@ -33,6 +34,7 @@ interface TodoInputProps {
 export function TodoInput({
   onAdd,
   customCategories,
+  defaultCategories,
   onAddCategory,
   onDeleteCategory,
 }: TodoInputProps) {
@@ -74,7 +76,6 @@ export function TodoInput({
     }
   };
 
-  const defaultCategories = ["Work", "Personal", "Shopping", "Health"];
 
   return (
     <Card className="p-4 bg-gray-900/90 backdrop-blur-sm border-2 border-gray-800 shadow-lg">
