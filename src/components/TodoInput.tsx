@@ -27,9 +27,15 @@ interface TodoInputProps {
   }) => void;
   customCategories: string[];
   onAddCategory: (category: string) => void;
+  onDeleteCategory: (category: string) => void;
 }
 
-export function TodoInput({ onAdd, customCategories, onAddCategory }: TodoInputProps) {
+export function TodoInput({
+  onAdd,
+  customCategories,
+  onAddCategory,
+  onDeleteCategory,
+}: TodoInputProps) {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
   const [category, setCategory] = useState("Personal");
@@ -99,10 +105,34 @@ export function TodoInput({ onAdd, customCategories, onAddCategory }: TodoInputP
             </SelectTrigger>
             <SelectContent>
               {defaultCategories.map((cat) => (
-                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                <SelectItem key={cat} value={cat} className="justify-between gap-2">
+                  <span>{cat}</span>
+                  <button
+                    type="button"
+                    onPointerDown={(event) => {
+                      event.preventDefault();
+                      onDeleteCategory(cat);
+                    }}
+                    className="text-xs text-red-400 hover:text-red-200"
+                  >
+                    ×
+                  </button>
+                </SelectItem>
               ))}
               {customCategories.map((cat) => (
-                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                <SelectItem key={cat} value={cat} className="justify-between gap-2">
+                  <span>{cat}</span>
+                  <button
+                    type="button"
+                    onPointerDown={(event) => {
+                      event.preventDefault();
+                      onDeleteCategory(cat);
+                    }}
+                    className="text-xs text-red-400 hover:text-red-200"
+                  >
+                    ×
+                  </button>
+                </SelectItem>
               ))}
               <SelectItem value="add_new" className="text-violet-400">
                 <Plus className="h-3 w-3 inline mr-1" />

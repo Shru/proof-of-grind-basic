@@ -135,6 +135,13 @@ export default function App() {
     });
   };
 
+  const addCustomCategory = (category: string) => {
+    if (!customCategories.includes(category)) {
+      setCustomCategories([category, ...customCategories]);
+      toast.success(`Category "${category}" added`);
+    }
+  };
+
   const toggleTodo = (id: string) => {
     setTodos(
       todos.map((todo) => {
@@ -233,12 +240,14 @@ export default function App() {
     setFilterPriority("all");
     toast.info("Filters cleared");
   };
+  const deleteCategory = (categoryToDelete: string) => {
+  setCustomCategories(
+    customCategories.filter(
+      (category: string) => category !== categoryToDelete
+    )
+  );
+};
 
-  const addCustomCategory = (category: string) => {
-    if (category && !customCategories.includes(category)) {
-      setCustomCategories([...customCategories, category]);
-    }
-  };
 
   // Show share view if shareId is present
   if (shareId) {
@@ -328,7 +337,12 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: 0.4 }}
             >
-              <TodoInput onAdd={addTodo} customCategories={customCategories} onAddCategory={addCustomCategory} />
+              <TodoInput
+                onAdd={addTodo}
+                customCategories={customCategories}
+                onAddCategory={addCustomCategory}
+                onDeleteCategory={deleteCategory}
+              />
             </motion.div>
           )}
 
