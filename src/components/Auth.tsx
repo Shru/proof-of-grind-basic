@@ -28,8 +28,6 @@ export function Auth({ onAuthenticated }: AuthProps) {
         toast.success("Welcome back!");
       } else {
         await signup(email, password, name);
-        // After signup, log them in
-        await login(email, password);
         toast.success("Account created! Welcome!");
       }
       onAuthenticated();

@@ -135,6 +135,13 @@ export default function App() {
     });
   };
 
+  const addCustomCategory = (category: string) => {
+    if (!customCategories.includes(category)) {
+      setCustomCategories([category, ...customCategories]);
+      toast.success(`Category "${category}" added`);
+    }
+  };
+
   const toggleTodo = (id: string) => {
     setTodos(
       todos.map((todo) => {
@@ -330,7 +337,12 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: 0.4 }}
             >
-              <TodoInput onAdd={addTodo} customCategories={customCategories} onAddCategory={addCustomCategory} />
+              <TodoInput
+                onAdd={addTodo}
+                customCategories={customCategories}
+                onAddCategory={addCustomCategory}
+                onDeleteCategory={deleteCategory}
+              />
             </motion.div>
           )}
 
