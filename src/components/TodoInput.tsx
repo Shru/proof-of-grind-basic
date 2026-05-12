@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -113,9 +113,9 @@ export function TodoInput({
                       event.preventDefault();
                       onDeleteCategory(cat);
                     }}
-                    className="text-xs text-red-400 hover:text-red-200"
+                    className="ml-auto flex items-center text-red-400 hover:text-red-200"
                   >
-                    ×
+                    <X className="h-3 w-3" />
                   </button>
                 </SelectItem>
               ))}
@@ -128,9 +128,9 @@ export function TodoInput({
                       event.preventDefault();
                       onDeleteCategory(cat);
                     }}
-                    className="text-xs text-red-400 hover:text-red-200"
+                    className="ml-auto flex items-center text-red-400 hover:text-red-200"
                   >
-                    ×
+                    <X className="h-3 w-3" />
                   </button>
                 </SelectItem>
               ))}
