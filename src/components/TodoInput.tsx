@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -44,6 +44,13 @@ export function TodoInput({
   const [dueDate, setDueDate] = useState("");
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+
+  useEffect(() => {
+    const allCategories = [...defaultCategories, ...customCategories];
+    if (allCategories.length > 0 && !allCategories.includes(category)) {
+      setCategory(allCategories[0]);
+    }
+  }, [defaultCategories, customCategories]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

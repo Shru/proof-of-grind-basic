@@ -68,7 +68,7 @@ export default function App() {
   useEffect(() => {
     if (!isAuthenticated || !categoriesInitialized) return;
     const timeoutId = setTimeout(() => {
-      saveCategories([...defaultCategories, ...customCategories]).catch((error) => {
+      saveCategories(["__v2", ...defaultCategories, ...customCategories]).catch((error) => {
         console.error("Error saving categories:", error);
       });
     }, 500);
@@ -95,14 +95,21 @@ export default function App() {
       ]);
       setTodos(todosData || []);
       const fetched: string[] = categoriesData || [];
-      const isNewFormat = fetched.some((c) => DEFAULT_CATEGORIES.includes(c));
-      if (fetched.length === 0 || !isNewFormat) {
-        // New user or old-format data: show hardcoded defaults alongside any saved customs
+      if (fetched[0] === "__v2") {
+        // Sentinel present: authoritative new format, load exactly what was saved
+        setDefaultCategories([]);
+        setCustomCategories(fetched.slice(1));
+      } else if (fetched.length === 0) {
+        // New user with no saved categories
         setDefaultCategories(DEFAULT_CATEGORIES);
+        setCustomCategories([]);
+      } else if (fetched.some((c) => DEFAULT_CATEGORIES.includes(c))) {
+        // Transitional new format (saved before sentinel was introduced)
+        setDefaultCategories([]);
         setCustomCategories(fetched);
       } else {
-        // New format: entire list (defaults + customs) stored together
-        setDefaultCategories([]);
+        // Old format: only custom categories were saved, prepend hardcoded defaults
+        setDefaultCategories(DEFAULT_CATEGORIES);
         setCustomCategories(fetched);
       }
       setCategoriesInitialized(true);
@@ -155,9 +162,12 @@ export default function App() {
   };
 
   const addCustomCategory = (category: string) => {
-    if (!customCategories.includes(category)) {
+    const allCategories = [...defaultCategories, ...customCategories];
+    if (!allCategories.includes(category)) {
       setCustomCategories([category, ...customCategories]);
       toast.success(`Category "${category}" added`);
+    } else {
+      toast.error(`Category "${category}" already exists`);
     }
   };
 
