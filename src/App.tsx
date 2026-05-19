@@ -14,6 +14,8 @@ import { toast } from "sonner@2.0.3";
 import { checkAuthentication, logout, fetchTodos, saveTodos, fetchCategories, saveCategories } from "./utils/api";
 import logo from "./assets/logo.png";
 
+const DEFAULT_CATEGORIES = ["Work", "Personal", "Shopping", "Health"];
+
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +27,8 @@ export default function App() {
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
   const [customCategories, setCustomCategories] = useState<string[]>([]);
-  const [defaultCategories, setDefaultCategories] = useState<string[]>(["Work", "Personal", "Shopping", "Health"]);
+  const [defaultCategories, setDefaultCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [categoriesInitialized, setCategoriesInitialized] = useState(false);
 
   // Check for share link in URL
   useEffect(() => {
@@ -63,16 +66,14 @@ export default function App() {
 
   // Auto-save categories whenever they change (with debounce)
   useEffect(() => {
-    if (isAuthenticated && !isLoading && customCategories.length > 0) {
-      const timeoutId = setTimeout(() => {
-        saveCategories(customCategories).catch((error) => {
-          console.error("Error saving categories:", error);
-        });
-      }, 500);
-      
-      return () => clearTimeout(timeoutId);
-    }
-  }, [customCategories, isAuthenticated, isLoading]);
+    if (!isAuthenticated || !categoriesInitialized) return;
+    const timeoutId = setTimeout(() => {
+      saveCategories([...defaultCategories, ...customCategories]).catch((error) => {
+        console.error("Error saving categories:", error);
+      });
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [defaultCategories, customCategories, isAuthenticated, categoriesInitialized]);
 
   async function checkAuth() {
     try {
@@ -93,12 +94,25 @@ export default function App() {
         fetchCategories(),
       ]);
       setTodos(todosData || []);
-      setCustomCategories(categoriesData || []);
+      const fetched: string[] = categoriesData || [];
+      const isNewFormat = fetched.some((c) => DEFAULT_CATEGORIES.includes(c));
+      if (fetched.length === 0 || !isNewFormat) {
+        // New user or old-format data: show hardcoded defaults alongside any saved customs
+        setDefaultCategories(DEFAULT_CATEGORIES);
+        setCustomCategories(fetched);
+      } else {
+        // New format: entire list (defaults + customs) stored together
+        setDefaultCategories([]);
+        setCustomCategories(fetched);
+      }
+      setCategoriesInitialized(true);
     } catch (error) {
       console.error("Error loading data:", error);
       // Don't show error toast for initial load, just set empty arrays
       setTodos([]);
+      setDefaultCategories(DEFAULT_CATEGORIES);
       setCustomCategories([]);
+      setCategoriesInitialized(true);
     }
   }
 
@@ -107,14 +121,18 @@ export default function App() {
       await logout();
       setIsAuthenticated(false);
       setTodos([]);
+      setDefaultCategories(DEFAULT_CATEGORIES);
       setCustomCategories([]);
+      setCategoriesInitialized(false);
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);
       // Still logout on frontend even if backend fails
       setIsAuthenticated(false);
       setTodos([]);
+      setDefaultCategories(DEFAULT_CATEGORIES);
       setCustomCategories([]);
+      setCategoriesInitialized(false);
       toast.success("Logged out");
     }
   }
