@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -106,33 +106,21 @@ export function TodoInput({
             </SelectTrigger>
             <SelectContent>
               {defaultCategories.map((cat) => (
-                <SelectItem key={cat} value={cat} className="justify-between gap-2">
-                  <span>{cat}</span>
-                  <button
-                    type="button"
-                    onPointerDown={(event) => {
-                      event.preventDefault();
-                      onDeleteCategory(cat);
-                    }}
-                    className="ml-auto flex items-center text-red-400 hover:text-red-200"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
+                <SelectItem
+                  key={cat}
+                  value={cat}
+                  onDelete={(e) => { e.preventDefault(); onDeleteCategory(cat); }}
+                >
+                  {cat}
                 </SelectItem>
               ))}
               {customCategories.map((cat) => (
-                <SelectItem key={cat} value={cat} className="justify-between gap-2">
-                  <span>{cat}</span>
-                  <button
-                    type="button"
-                    onPointerDown={(event) => {
-                      event.preventDefault();
-                      onDeleteCategory(cat);
-                    }}
-                    className="ml-auto flex items-center text-red-400 hover:text-red-200"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
+                <SelectItem
+                  key={cat}
+                  value={cat}
+                  onDelete={(e) => { e.preventDefault(); onDeleteCategory(cat); }}
+                >
+                  {cat}
                 </SelectItem>
               ))}
               <SelectItem value="add_new" className="text-violet-400">
