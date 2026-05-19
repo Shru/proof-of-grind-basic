@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -26,6 +26,7 @@ interface TodoInputProps {
     dueDate?: string;
   }) => void;
   customCategories: string[];
+  defaultCategories: string[];
   onAddCategory: (category: string) => void;
   onDeleteCategory: (category: string) => void;
 }
@@ -33,6 +34,7 @@ interface TodoInputProps {
 export function TodoInput({
   onAdd,
   customCategories,
+  defaultCategories,
   onAddCategory,
   onDeleteCategory,
 }: TodoInputProps) {
@@ -42,6 +44,13 @@ export function TodoInput({
   const [dueDate, setDueDate] = useState("");
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+
+  useEffect(() => {
+    const allCategories = [...defaultCategories, ...customCategories];
+    if (allCategories.length > 0 && !allCategories.includes(category)) {
+      setCategory(allCategories[0]);
+    }
+  }, [defaultCategories, customCategories]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +83,6 @@ export function TodoInput({
     }
   };
 
-  const defaultCategories = ["Work", "Personal", "Shopping", "Health"];
 
   return (
     <Card className="p-4 bg-gray-900/90 backdrop-blur-sm border-2 border-gray-800 shadow-lg">
@@ -105,33 +113,21 @@ export function TodoInput({
             </SelectTrigger>
             <SelectContent>
               {defaultCategories.map((cat) => (
-                <SelectItem key={cat} value={cat} className="justify-between gap-2">
-                  <span>{cat}</span>
-                  <button
-                    type="button"
-                    onPointerDown={(event) => {
-                      event.preventDefault();
-                      onDeleteCategory(cat);
-                    }}
-                    className="text-xs text-red-400 hover:text-red-200"
-                  >
-                    ×
-                  </button>
+                <SelectItem
+                  key={cat}
+                  value={cat}
+                  onDelete={(e) => { e.preventDefault(); onDeleteCategory(cat); }}
+                >
+                  {cat}
                 </SelectItem>
               ))}
               {customCategories.map((cat) => (
-                <SelectItem key={cat} value={cat} className="justify-between gap-2">
-                  <span>{cat}</span>
-                  <button
-                    type="button"
-                    onPointerDown={(event) => {
-                      event.preventDefault();
-                      onDeleteCategory(cat);
-                    }}
-                    className="text-xs text-red-400 hover:text-red-200"
-                  >
-                    ×
-                  </button>
+                <SelectItem
+                  key={cat}
+                  value={cat}
+                  onDelete={(e) => { e.preventDefault(); onDeleteCategory(cat); }}
+                >
+                  {cat}
                 </SelectItem>
               ))}
               <SelectItem value="add_new" className="text-violet-400">

@@ -6,6 +6,7 @@ import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  XIcon,
 } from "lucide-react@0.487.0";
 
 import { cn } from "./utils";
@@ -105,8 +106,11 @@ function SelectLabel({
 function SelectItem({
   className,
   children,
+  onDelete,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+  onDelete?: (e: React.PointerEvent<HTMLButtonElement>) => void;
+}) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -117,9 +121,23 @@ function SelectItem({
       {...props}
     >
       <span className="absolute right-2 flex size-3.5 items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
-        </SelectPrimitive.ItemIndicator>
+        {onDelete ? (
+          <button
+            type="button"
+            onPointerDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onDelete(e);
+            }}
+            className="flex items-center text-red-400 hover:text-red-200 [&_svg]:pointer-events-auto cursor-pointer"
+          >
+            <XIcon className="size-3.5" />
+          </button>
+        ) : (
+          <SelectPrimitive.ItemIndicator>
+            <CheckIcon className="size-4" />
+          </SelectPrimitive.ItemIndicator>
+        )}
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
